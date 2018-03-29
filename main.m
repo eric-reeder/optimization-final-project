@@ -19,6 +19,12 @@ x0 = [341.1; % x1: control arm effective length
      -50.8;  % x8: strut-chassis attachment x-coordinate
      455;];  % x9: strut-chassis attachment y-coordinate
  
- strutLen = 171.5;
- [A, B, C, D, E, F] = calculateGeometry(x0, strutLen);
- plotGeometry(A, B, C, D, E, F);
+strutLen = 171.5;
+[A, B, C, D, E, F] = calculateGeometry(x0, strutLen);
+plotGeometry(A, B, C, D, E, F);
+ 
+minStrutLen = 143;
+maxStrutLen = 200;
+N = 20;
+ 
+f = @(x) objectiveFun(x, minStrutLen, maxStrutLen, N);

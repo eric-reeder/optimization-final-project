@@ -23,10 +23,10 @@ yc = x(7) + x(3).*sin(theta6);
 C = [xc, yc];
 
 % Find coordinates of B
-l6 = sqrt((xa - xc).^2 + (ya - yc).^2)
-theta7 = asin((xc - xa) ./ l6)
-theta8 = acos((x(1).^2 - x(2).^2 - l6.^2) ./ (-2.*x(2).*l6))
-theta9 = theta8 - theta7
+l6 = sqrt((xa - xc).^2 + (ya - yc).^2);
+theta7 = asin((xc - xa) ./ l6);
+theta8 = acos((x(1).^2 - x(2).^2 - l6.^2) ./ (-2.*x(2).*l6));
+theta9 = theta8 - theta7;
 xb = xc + x(2).*sin(theta9);
 yb = yc - x(2).*cos(theta9);
 B = [xb, yb];
