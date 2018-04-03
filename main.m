@@ -34,7 +34,8 @@ N = 10; % number of sample points
 %% Testing
 rideHeightStrutLen = 171.5;
 [A, B, C, D, E, F] = calculateGeometry(x0, rideHeightStrutLen);
-plotGeometry(A, B, C, D, E, F, 'Current Geometry', 'b');
+plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
+    'Current Geometry', 'b');
 % findMotionRatio(x0,strutLen,maxStrutLen)
 % findMotionRatio(x0,minStrutLen,maxStrutLen)
 % constraints(x0,minStrutLen,maxStrutLen,xdTube,ydTube,xfTube,yfTube,...
