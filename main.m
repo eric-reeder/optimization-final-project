@@ -29,7 +29,12 @@ xgRide = 370; % x-coordinate of lower control arm to upright mount point [mm]
 ygRide = 34.7; % y-coordinate of lower control arm to upright mount point [mm]
 minTabLen = 25; % minimum tab length [mm]
 maxTabLen = 75; % maximum tab length [mm]
+minLinkLen = 100; % minimum link length for multistart [mm]
+maxLinkLen = 500; % max link length for multistart [mm]
+minBellcrankLen = 20; % min bellcrank side length for multistart [mm]
+maxBellcrankLen = 75; % max bellcrank side length for multistart [mm]
 N = 10; % number of sample points
+startPts = 1; % number of multistarts
 
 %% Testing
 rideHeightStrutLen = 171.5;
@@ -46,11 +51,31 @@ plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
 f = @(x) objectiveFun(x, minStrutLen, maxStrutLen, N);
 c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
     ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen);
-[xMinimizer, minimum, exitflag, output] = fmincon(f, x0, [], [], [], [],...
-    [], [], c)
 
-[A, B, C, D, E, F] = calculateGeometry(xMinimizer, rideStrutLen);
-plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
-    'Optimized Geomtery', 'r');
+% rng(1);
+minimizers = zeros(9, startPts);
+for n = 1:startPts
+%     x0 = [minLinkLen + (maxLinkLen - minLinkLen).*rand(1,1);
+%           minLinkLen + (maxLinkLen - minLinkLen).*rand(1,1);
+%           minBellcrankLen + (maxBellcrankLen - minBellcrankLen).*rand(1,1);
+%           minBellcrankLen + (maxBellcrankLen - minBellcrankLen).*rand(1,1);
+%           minBellcrankLen + (maxBellcrankLen - minBellcrankLen).*rand(1,1);
+%           (xdTube + minTabLen) + ((xdTube+maxTabLen) - (xdTube+minTabLen)).*rand(1,1);
+%           (ydTube + minTabLen) + ((ydTube+maxTabLen) - (ydTube+minTabLen)).*rand(1,1);
+%           (xfTube + minTabLen) + ((xfTube+maxTabLen) - (xfTube+minTabLen)).*rand(1,1);
+%           (yfTube + minTabLen) + ((yfTube+maxTabLen) - (yfTube+minTabLen)).*rand(1,1)]
+    [xMinimizer, minimum, exitflag, output] = fmincon(f, x0, [], [], [], [],...
+        [], [], c)
+    if exitflag == 1
+        minimizers(:,n) = xMinimizer;
+    end
+end
+
+%% Plot
+for n = 1:startPts
+    [A, B, C, D, E, F] = calculateGeometry(minimizers(:,n), rideStrutLen);
+    plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
+        ['Optimized Geomtery ',num2str(n)], 'r');
+end
 
 
