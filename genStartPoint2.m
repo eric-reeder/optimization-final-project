@@ -1,0 +1,13 @@
+function x = genStartPoint2(c,minStrutLen,maxStrutLen,...
+    xdTube,ydTube,xfTube,yfTube,minTabLen,maxTabLen,...
+    minLinkLen,maxLinkLen,minBellcrankLen,maxBellcrankLen)
+
+f = @(x) startPointObjective(x,c);
+
+x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
+    maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
+    minStrutLen,maxStrutLen);
+
+x = fminunc(f,x0);
+
+end

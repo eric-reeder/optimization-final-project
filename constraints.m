@@ -1,7 +1,8 @@
 function [cIneq, cEq] = constraints(x,minStrutLen,maxStrutLen,rideStrutLen,...
-    xdTube,ydTube,xfTube,yfTube,xgRide,ygRide,minTabLen,maxTabLen)
+    xdTube,ydTube,xfTube,yfTube,xgRide,ygRide,minTabLen,maxTabLen,...
+    maxBellcrankLen)
 
-numIneqConstraints = 24;
+numIneqConstraints = 27;
 cIneq = zeros(numIneqConstraints, 1);
 cEq = [];
 
@@ -30,7 +31,7 @@ l6Len = @(strutLen) findl6(x, strutLen);
 [maxls,maxl6] = fminbnd(@(strutLen)-l6Len(strutLen),minStrutLen,maxStrutLen);
 maxl6 = -maxl6;
 
-% Triangle DEF is valid
+% Triangle ABC is valid
 cIneq(12) = x(1) - x(2) - minl6;
 cIneq(13) = x(2) - x(1) - minl6;
 cIneq(14) = maxl6 - x(1) - x(2);
@@ -43,7 +44,7 @@ cIneq(17) = x(5) - x(3) - x(4);
 % Calculate l7
 l7 = sqrt((x(8) - x(6)).^2 + (x(9) - x(7)).^2);
 
-% Triangle ABC is valid
+% Triangle DEF is valid
 cIneq(18) = x(4) - l7 - minStrutLen;
 cIneq(19) = l7 - x(4) - minStrutLen;
 cIneq(20) = maxStrutLen - x(4) - l7;
@@ -55,5 +56,10 @@ cIneq(21) = B(1) - xgRide;
 cIneq(22) = ygRide - B(2);
 cIneq(23) = minTabLen - gTabLen;
 cIneq(24) = gTabLen - maxTabLen;
+
+% Bellcrank lengths less than maximum
+cIneq(25) = x(3) - maxBellcrankLen;
+cIneq(26) = x(4) - maxBellcrankLen;
+cIneq(27) = x(5) - maxBellcrankLen;
 
 end

@@ -32,38 +32,37 @@ maxTabLen = 75; % maximum tab length [mm]
 minLinkLen = 100; % minimum link length for multistart [mm]
 maxLinkLen = 500; % max link length for multistart [mm]
 minBellcrankLen = 20; % min bellcrank side length for multistart [mm]
-maxBellcrankLen = 75; % max bellcrank side length for multistart [mm]
+maxBellcrankLen = 150; % max bellcrank side length for multistart [mm]
 N = 10; % number of sample points
-startPts = 1; % number of multistarts
+startPts = 20; % number of multistarts
 
 %% Testing
 rideHeightStrutLen = 171.5;
 [A, B, C, D, E, F] = calculateGeometry(x0, rideHeightStrutLen);
 plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
     'Current Geometry', 'b');
-% findMotionRatio(x0,strutLen,maxStrutLen)
-% findMotionRatio(x0,minStrutLen,maxStrutLen)
-% constraints(x0,minStrutLen,maxStrutLen,xdTube,ydTube,xfTube,yfTube,...
-%     minTabLen,maxTabLen)
-% objectiveFun(x0, minStrutLen, maxStrutLen, N)
+
+% c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
+%     ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen);
+% x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
+%     maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
+%     minStrutLen,maxStrutLen)
+% x0 = genStartPoint2(c,minStrutLen,maxStrutLen,...
+%     xdTube,ydTube,xfTube,yfTube,minTabLen,maxTabLen,...
+%     minLinkLen,maxLinkLen,minBellcrankLen,maxBellcrankLen);
+% c(x0)
 
 %% Optimization
 f = @(x) objectiveFun(x, minStrutLen, maxStrutLen, N);
 c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
-    ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen);
+    ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen,...
+    maxBellcrankLen);
 
-% rng(1);
 minimizers = zeros(9, startPts);
 for n = 1:startPts
-%     x0 = [minLinkLen + (maxLinkLen - minLinkLen).*rand(1,1);
-%           minLinkLen + (maxLinkLen - minLinkLen).*rand(1,1);
-%           minBellcrankLen + (maxBellcrankLen - minBellcrankLen).*rand(1,1);
-%           minBellcrankLen + (maxBellcrankLen - minBellcrankLen).*rand(1,1);
-%           minBellcrankLen + (maxBellcrankLen - minBellcrankLen).*rand(1,1);
-%           (xdTube + minTabLen) + ((xdTube+maxTabLen) - (xdTube+minTabLen)).*rand(1,1);
-%           (ydTube + minTabLen) + ((ydTube+maxTabLen) - (ydTube+minTabLen)).*rand(1,1);
-%           (xfTube + minTabLen) + ((xfTube+maxTabLen) - (xfTube+minTabLen)).*rand(1,1);
-%           (yfTube + minTabLen) + ((yfTube+maxTabLen) - (yfTube+minTabLen)).*rand(1,1)]
+    x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
+    maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
+    minStrutLen,maxStrutLen);
     [xMinimizer, minimum, exitflag, output] = fmincon(f, x0, [], [], [], [],...
         [], [], c)
     if exitflag == 1
