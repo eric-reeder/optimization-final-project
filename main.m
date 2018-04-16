@@ -36,21 +36,11 @@ maxBellcrankLen = 150; % max bellcrank side length for multistart [mm]
 N = 10; % number of sample points
 startPts = 20; % number of multistarts
 
-%% Testing
+%% Plot Current Geometry
 rideHeightStrutLen = 171.5;
 [A, B, C, D, E, F] = calculateGeometry(x0, rideHeightStrutLen);
 plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
     'Current Geometry', 'b');
-
-% c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
-%     ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen);
-% x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
-%     maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
-%     minStrutLen,maxStrutLen)
-% x0 = genStartPoint2(c,minStrutLen,maxStrutLen,...
-%     xdTube,ydTube,xfTube,yfTube,minTabLen,maxTabLen,...
-%     minLinkLen,maxLinkLen,minBellcrankLen,maxBellcrankLen);
-% c(x0)
 
 %% Optimization
 f = @(x) objectiveFun(x, minStrutLen, maxStrutLen, N);
