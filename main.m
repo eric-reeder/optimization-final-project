@@ -34,7 +34,7 @@ maxLinkLen = 500; % max link length for multistart [mm]
 minBellcrankLen = 20; % min bellcrank side length for multistart [mm]
 maxBellcrankLen = 150; % max bellcrank side length for multistart [mm]
 N = 10; % number of sample points
-startPts = 1; % number of multistarts
+startPts = 10; % number of multistarts
 
 %% Plot Current Geometry
 rideHeightStrutLen = 171.5;
@@ -48,15 +48,15 @@ c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
     ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen,...
     maxBellcrankLen);
 options = optimoptions('fmincon');
-options.OptimalityTolerance = 1e-6;
+options.OptimalityTolerance = 1e-7;
 options.MaxFunctionEvaluations = 20000;
 
 results = zeros(10, startPts);
 lambdas = zeros(27, startPts);
 for n = 1:startPts
-%     x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
-%     maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
-%     minStrutLen,maxStrutLen);
+    x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
+    maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
+    minStrutLen,maxStrutLen);
     [xMinimizer, minimum, exitflag, output, lambda] = fmincon(f, x0, [], [], [], [],...
         [], [], c, options);
     if exitflag == 1
