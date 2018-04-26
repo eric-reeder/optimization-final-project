@@ -34,7 +34,7 @@ maxLinkLen = 500; % max link length for multistart [mm]
 minBellcrankLen = 20; % min bellcrank side length for multistart [mm]
 maxBellcrankLen = 150; % max bellcrank side length for multistart [mm]
 N = 10; % number of sample points
-startPts = 20; % number of multistarts
+startPts = 25; % number of multistarts
 
 %% Plot Current Geometry
 rideHeightStrutLen = 171.5;
@@ -48,23 +48,38 @@ c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
     ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen,...
     maxBellcrankLen);
 
-minimizers = zeros(9, startPts);
+results = zeros(10, startPts);
 for n = 1:startPts
     x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
     maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
     minStrutLen,maxStrutLen);
     [xMinimizer, minimum, exitflag, output] = fmincon(f, x0, [], [], [], [],...
-        [], [], c)
+        [], [], c);
     if exitflag == 1
-        minimizers(:,n) = xMinimizer;
+        results(1,n) = minimum;
+        results(2:end,n) = xMinimizer;
+    else
+        results(:,n) = NaN;
     end
 end
 
 %% Plot
+
+figure(2)
+hold on
+
 for n = 1:startPts
-    [A, B, C, D, E, F] = calculateGeometry(minimizers(:,n), rideStrutLen);
-    plotGeometry(A, B, C, D, E, F, xdTube, ydTube, xfTube, yfTube,...
-        ['Optimized Geomtery ',num2str(n)], 'r');
+    [A, B, C, D, E, F] = calculateGeometry(results(2:end,n), rideStrutLen);
+    
+    xCoords = [A(1), B(1), C(1), D(1), E(1), F(1)];
+    yCoords = [A(2), B(2), C(2), D(2), E(2), F(2)];
+
+    plot(xCoords, yCoords, ':r')
+    plot([C(1),E(1)],[C(2),E(2)],':r');
+    plot(xdTube,ydTube,'o','MarkerEdgeColor','r')
+    plot(xfTube,yfTube,'o','MarkerEdgeColor','r')
+    axis([-100 500 -50 600])
+    set(gca,'DataAspectRatio',[1 1 1])
 end
 
 
