@@ -10,6 +10,6 @@ end
 
 meanMotionRatio = mean(motionRatio);
 residualSum = sum((motionRatio - meanMotionRatio).^2);
-f = sqrt(residualSum./(N-1));
+f = sqrt(residualSum./(N-1))/1e-2;
 
 end

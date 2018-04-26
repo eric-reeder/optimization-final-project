@@ -47,8 +47,12 @@ f = @(x) objectiveFun(x, minStrutLen, maxStrutLen, N);
 c = @(x) constraints(x, minStrutLen, maxStrutLen, rideStrutLen, xdTube, ...
     ydTube, xfTube, yfTube, xgRide, ygRide, minTabLen, maxTabLen,...
     maxBellcrankLen);
+options = optimoptions('fmincon');
+options.OptimalityTolerance = 1e-6;
+options.MaxFunctionEvaluations = 20000;
 
 results = zeros(10, startPts);
+lambdas = zeros(27, startPts);
 for n = 1:startPts
     x0 = genStartPoint(minLinkLen,maxLinkLen,minBellcrankLen,...
     maxBellcrankLen,minTabLen,maxTabLen,xdTube,ydTube,xfTube,yfTube,...
@@ -58,6 +62,7 @@ for n = 1:startPts
     if exitflag == 1
         results(1,n) = minimum;
         results(2:end,n) = xMinimizer;
+        lambdas(1:end,n) = lambda.ineqnonlin;
     else
         results(:,n) = NaN;
     end
