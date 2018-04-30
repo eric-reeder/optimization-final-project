@@ -69,8 +69,6 @@ for n = 1:resultsFiles
         end
     end
     
-    minima
-
     % Find corresponding x
     for i = 1:size(results,2)
         currResult = results(:,i,n);
@@ -86,7 +84,6 @@ for n = 1:resultsFiles
 end
 
 %% Plot sorted results
-
 figure(2)
 hold on
 for i = 1:resultsFiles
@@ -105,6 +102,13 @@ for i = 1:resultsFiles
 end
 title('Optimized Geometries')
 
+%% Plot global minimum vs parameter value
+globalMinima = [finalResults(1,1,1) finalResults(1,2,2) finalResults(1,1,3) finalResults(1,1,4) finalResults(1,1,5) finalResults(1,2,6)];
+figure(3)
+plot(nums,globalMinima,'--or','MarkerFaceColor','r','MarkerSize',10)
+title('Effect of minimum tab length on minimum objective function value')
+xlabel('Minimum tab length [mm]')
+ylabel('Minimum objective function value')
 
 
 

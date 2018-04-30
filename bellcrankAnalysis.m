@@ -68,8 +68,6 @@ for n = 1:resultsFiles
             index = index + 1;
         end
     end
-    
-    minima
 
     % Find corresponding x
     for i = 1:size(results,2)
@@ -86,7 +84,6 @@ for n = 1:resultsFiles
 end
 
 %% Plot sorted results
-
 figure(2)
 hold on
 for i = 1:resultsFiles
@@ -104,6 +101,14 @@ for i = 1:resultsFiles
     end
 end
 title('Optimized Geometries')
+
+%% Plot global minimum vs parameter value
+globalMinima = [.0272 .0184 .0133 .0102 .0083 .0070];
+figure(3)
+plot(nums,globalMinima,'--or','MarkerFaceColor','r','MarkerSize',10)
+title('Effect of max bellcrank side length on minimum objective function value')
+xlabel('Max bellcrank side length [mm]')
+ylabel('Minimum objective function value')
 
 
 

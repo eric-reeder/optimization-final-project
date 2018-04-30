@@ -50,6 +50,11 @@ for n = 1:size(cleanResults,2)
     axis([-100 450 -50 550])
     set(gca,'DataAspectRatio',[1 1 1])
 end
+plot(xdTube,ydTube,'o','MarkerEdgeColor','k')
+plot(xfTube,yfTube,'o','MarkerEdgeColor','k')
+title('Multistart Results')
+xlabel('Y-Coordinate')
+ylabel('Z-Coordinate')
 
 %% Sort results by minimum
 minima = [];
@@ -106,7 +111,11 @@ for n = 1:size(finalResults,2)
     axis([-100 450 -50 550])
     set(gca,'DataAspectRatio',[1 1 1])
 end
+plot(xdTube,ydTube,'o','MarkerEdgeColor','k')
+plot(xfTube,yfTube,'o','MarkerEdgeColor','k')
 title('Optimized Geometries')
+xlabel('Y-Coordinate [mm]')
+ylabel('Z-Coordinate [mm]')
 
 
 
