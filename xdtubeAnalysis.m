@@ -8,12 +8,12 @@ close all
 clc
 
 %% Read results files
-resultsFiles = 6;
+resultsFiles = 5;
 results = zeros(10,20,resultsFiles);
 lambdas = zeros(27,20,resultsFiles);
-nums = 100:20:200;
+nums = -40:20:40;
 for n = 1:resultsFiles
-    filename = ['bellcrank',num2str(nums(n)),'.mat'];
+    filename = ['xdtube',num2str(nums(n)),'.mat'];
     currResults = load(filename);
     results(:,:,n) = currResults.results;
     lambdas(:,:,n) = currResults.lambdas;
@@ -26,7 +26,7 @@ ydTube = 263.2; % y-coordinate of bellcrank mounting tube [mm]
 xfTube = -86.4; % x-coordinate of strut mounting tube [mm]
 yfTube = 483.5; % y-coordinate of strut mounting tube [mm]
 
-colors = ['r','g','b','c','m','k'];
+colors = ['r','g','b','c','k','k'];
 figure(1)
 hold on
 for i = 1:resultsFiles
@@ -86,7 +86,7 @@ end
 %% Plot sorted results
 figure(2)
 hold on
-for i = [1,6]
+for i = [1,5]
     color = colors(i);
     for n = 1:size(finalResults,2)
         [A, B, C, D, E, F] = calculateGeometry(finalResults(2:end,n,i), rideStrutLen);
@@ -100,15 +100,15 @@ for i = [1,6]
         set(gca,'DataAspectRatio',[1 1 1])
     end
 end
-title('Effect of Maximum Bellcrank Side Length on Optimized Geometries')
+title('Effect of X-Coordinate of Bellcrank Mount Tube on Optimized Geometries')
 xlabel('Y-Coordinate [mm]')
 ylabel('X-Coordinate [mm]')
 
 %% Plot global minimum vs parameter value
-globalMinima = [.0272 .0184 .0133 .0102 .0083 .0070];
+globalMinima = [finalResults(1,1,1) finalResults(1,1,2) finalResults(1,2,3) finalResults(1,1,4) finalResults(1,3,5)];
 figure(3)
 plot(nums,globalMinima,'--or','MarkerFaceColor','r','MarkerSize',10)
-title('Effect of max bellcrank side length on minimum objective function value')
+title('Effect of x-coordinate of bellcrank mount tube on minimum objective function value')
 xlabel('Max bellcrank side length [mm]')
 ylabel('Minimum objective function value')
 

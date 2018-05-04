@@ -10,7 +10,7 @@ plot(xCoords, yCoords, color)
 plot([C(1),E(1)],[C(2),E(2)],color);
 plot(xdTube,ydTube,'o','MarkerEdgeColor',color)
 plot(xfTube,yfTube,'o','MarkerEdgeColor',color)
-axis([-100 500 -50 600])
+axis([-100 450 -50 550])
 set(gca,'DataAspectRatio',[1 1 1])
 
 end

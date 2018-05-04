@@ -86,7 +86,7 @@ end
 %% Plot sorted results
 figure(2)
 hold on
-for i = 1:resultsFiles
+for i = [1,6]
     color = colors(i);
     for n = 1:size(finalResults,2)
         [A, B, C, D, E, F] = calculateGeometry(finalResults(2:end,n,i), rideStrutLen);
@@ -100,7 +100,9 @@ for i = 1:resultsFiles
         set(gca,'DataAspectRatio',[1 1 1])
     end
 end
-title('Optimized Geometries')
+title('Effect of Minimum Tab Length on Optimized Geometries')
+xlabel('Y-Coordinate [mm]')
+ylabel('X-Coordinate [mm]')
 
 %% Plot global minimum vs parameter value
 globalMinima = [finalResults(1,1,1) finalResults(1,2,2) finalResults(1,1,3) finalResults(1,1,4) finalResults(1,1,5) finalResults(1,2,6)];
